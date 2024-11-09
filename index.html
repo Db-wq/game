@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dino's Clicker Game</title>
+    <style>
+        /* style.css */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        #game-container {
+            text-align: center;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 350px;
+        }
+
+        h1 {
+            font-size: 36px;
+            color: #2c3e50;
+        }
+
+        h3 {
+            color: #16a085;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        button:disabled {
+            background-color: #888;
+            cursor: not-allowed;
+        }
+
+        #points-display h2 {
+            font-size: 24px;
+        }
+
+        #upgrades h3 {
+            font-size: 18px;
+        }
+
+        /* Dino Image */
+        #dino-image {
+            margin-top: 20px;
+            width: 100px;
+            height: 100px;
+            background-image: url('https://example.com/dino.png'); /* Replace with a real Dino image URL */
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <h1>Dino's Clicker Game</h1>
+        
+        <!-- Dino Image -->
+        <div id="dino-image"></div>
+        
+        <!-- Points Display -->
+        <div id="points-display">
+            <h2>Points: <span id="points">0</span></h2>
+        </div>
+        
+        <!-- Click Button -->
+        <button id="click-button">Feed Dino!</button>
+        
+        <!-- Upgrades Section -->
+        <div id="upgrades">
+            <h3>Upgrade Dino's Power</h3>
+            <p>Upgrade to make Dino eat more with each click.</p>
+            <button id="upgrade-button">Upgrade (+1 per click) - Cost: <span id="upgrade-cost">10</span> points</button>
+        </div>
+    </div>
+
+    <script>
+        // Initialize variables
+        let points = 0;
+        let pointsPerClick = 1;
+        let upgradeCost = 10;
+
+        // DOM Elements
+        const pointsDisplay = document.getElementById('points');
+        const clickButton = document.getElementById('click-button');
+        const upgradeButton = document.getElementById('upgrade-button');
+        const upgradeCostDisplay = document.getElementById('upgrade-cost');
+
+        // Update points display
+        function updatePoints() {
+            pointsDisplay.textContent = points;
+        }
+
+        // Handle Click Button
+        clickButton.addEventListener('click', () => {
+            points += pointsPerClick;  // Increase points by pointsPerClick
+            updatePoints();             // Update points on screen
+        });
+
+        // Handle Upgrade Button
+        upgradeButton.addEventListener('click', () => {
+            if (points >= upgradeCost) {
+                points -= upgradeCost;  // Deduct points for the upgrade
+                pointsPerClick++;       // Increase points per click
+                upgradeCost = Math.floor(upgradeCost * 1.5); // Increase the cost of the next upgrade
+                updatePoints();         // Update points on screen
+                upgradeCostDisplay.textContent = upgradeCost; // Update the upgrade cost display
+            }
+        });
+
+        // Disable upgrade button if not enough points
+        function updateUpgradeButton() {
+            if (points >= upgradeCost) {
+                upgradeButton.disabled = false;
+            } else {
+                upgradeButton.disabled = true;
+            }
+        }
+
+        // Game loop to update upgrade button status
+        setInterval(updateUpgradeButton, 100);
+
+        // Initial setup
+        updatePoints();
+    </script>
+</body>
+</html>
